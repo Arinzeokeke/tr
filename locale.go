@@ -1,6 +1,7 @@
 package tr
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -70,17 +71,17 @@ type Locale struct {
 }
 
 // Tr returns locale's translation for path.
-func (c *Locale) Tr(path string) string {
+func (c *Locale) Tr(path string) (string, error) {
 	obj, ok := c.tree.Get(path)
 	if !ok {
-		panic("tr: no translation for " + path)
+		return "", fmt.Errorf("tr: no translation for " + path)
 	}
 
 	text := obj.(string)
 
 	if c.Trim {
-		return strings.TrimRight(text, "\n")
+		return strings.TrimRight(text, "\n"), nil
 	}
 
-	return text
+	return text, nil
 }

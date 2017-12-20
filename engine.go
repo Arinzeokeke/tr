@@ -78,10 +78,17 @@ func (e *Engine) Lang(localeName string) *Locale {
 }
 
 // Tr provides default locale's translation of path.
-func (e *Engine) Tr(path string) string {
+func (e *Engine) Tr(path string) (string, error) {
 	if e.Langs == nil {
 		panic("tr: default engine is not sent, see tr.Init()")
 	}
 
-	return e.DefaultLocale.Tr(path)
+	s, err := e.DefaultLocale.Tr(path)
+
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
+
 }
